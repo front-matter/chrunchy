@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 3.0.0'
 
   # Declare dependencies here, rather than in the Gemfile
-  s.add_dependency 'activesupport', '>= 6.1.5'
-  s.add_dependency 'typesense', '>= 0.15.0' 
+  s.add_dependency 'activesupport', '~> 6.1', '>= 6.1.5'
+  s.add_dependency 'typesense', '~> 0.15', '>= 0.15.0' 
   s.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.1'
   s.add_development_dependency 'rspec', '~> 3.4'
   s.add_development_dependency 'rubocop', '~> 1.36'
