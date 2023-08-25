@@ -1,39 +1,43 @@
-# frozen_string_literal: true
+require 'bundler'
 
-require 'bundler/setup'
-Bundler.setup
+Bundler.require
 
-require 'simplecov'
-require 'simplecov_json_formatter'
-SimpleCov.formatter = SimpleCov::Formatter::JSONFormatter
-SimpleCov.start
+require 'active_record'
 
-require 'crunchy'
-require 'rspec'
-require 'webmock/rspec'
-require 'vcr'
+require 'rspec/its'
+require 'rspec/collection_matchers'
+
+require 'timecop'
+
+Kaminari::Hooks.init if defined?(::Kaminari::Hooks)
+
+require 'support/fail_helpers'
+require 'support/class_helpers'
+
+require 'crunchy/rspec'
+
+host = ENV['ES_HOST'] || 'localhost'
+port = ENV['ES_PORT'] || 9250
+
+Crunchy.settings = {
+  host: "#{host}:#{port}",
+  wait_for_status: 'green',
+  index: {
+    number_of_shards: 1,
+    number_of_replicas: 0
+  }
+}
+
+# Crunchy.transport_logger = Logger.new(STDERR)
 
 RSpec.configure do |config|
+  config.mock_with :rspec
   config.order = :random
-  config.include WebMock::API
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
+  config.filter_run focus: true
+  config.run_all_when_everything_filtered = true
 
-  config.before do
-    ARGV.replace []
-  end
+  config.include FailHelpers
+  config.include ClassHelpers
 end
 
-def fixture_path
-  "#{File.expand_path('fixtures', __dir__)}/"
-end
-
-VCR.configure do |c|
-  c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
-  c.hook_into :webmock
-  c.ignore_localhost = true
-  c.default_cassette_options = { record: :new_episodes }
-  c.allow_http_connections_when_no_cassette = true
-  c.configure_rspec_metadata!
-end
+require 'support/active_record'
