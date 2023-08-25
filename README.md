@@ -6,14 +6,13 @@ A ruby client for the [Typesense](https://typesense.org/) search engine. Still i
 
 ## Development
 
-We use rspec for unit testing:
+We use rspec for testing:
 
 ```
 bundle exec rspec
 ```
 
 Follow along via [Github Issues](https://github.com/front-matter/crunchy/issues).
-Please open an issue if conversion fails or metadata are not properly supported.
 
 ### Note on Patches/Pull Requests
 
