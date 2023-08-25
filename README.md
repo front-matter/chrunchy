@@ -2,6 +2,8 @@
 
 # crunchy
 
+A ruby client for the [Typesense](https://typesense.org/) search engine. Still in early development.
+
 ## Development
 
 We use rspec for unit testing:
